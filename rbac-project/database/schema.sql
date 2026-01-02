@@ -70,6 +70,11 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES
 (2, 6), -- sort_employee
 (3, 1); -- view_dashboard
 
+INSERT INTO employees (id, name, department) VALUES
+(500001, 'Aarons Adams', 'Health')
+
+ALTER TABLE employees ADD COLUMN status ENUM('Tepat Waktu','Terlambat');
+
 SELECT u.id, u.username, r.role_name
 FROM users u
 JOIN user_roles ur ON u.id = ur.user_id
