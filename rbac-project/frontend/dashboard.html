@@ -19,6 +19,7 @@
       <th onclick="setSort('department')">Departemen</th>
       <th>Hadir</th>
       <th>Waktu masuk</th>
+      <th>Status</th>
       <th>Aksi</th>
     </tr>
   </thead>
@@ -96,11 +97,13 @@ function render(data, role) {
         <td>${row.department}</td>
         <td>${checkinBtn}</td>
         <td>${row.waktuMasuk ? new Date(row.waktuMasuk).toLocaleString() : '-'}</td>
+        <td>${row.status || '-'}</td>
         <td>${aksi}</td>
       </tr>
     `;
   });
 }
+
 async function checkIn(id) {
   const res = await fetch(`http://localhost:3000/api/dashboard/checkin/${id}`, {
     method: 'POST',
