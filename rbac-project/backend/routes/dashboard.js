@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
     const sortColumn = allowedSort.includes(sort) ? sort : 'name';
 
     let sql = `
-      SELECT id, name, department, waktuMasuk
+      SELECT id, name, department, waktuMasuk, status
       FROM employees
     `;
 
@@ -60,7 +60,7 @@ router.post('/checkin/:id', auth, async (req, res) => {
   console.log('CHECKIN HIT', req.params.id, req.user);
   try {
     const [result] = await db.query(
-      'UPDATE employees SET waktuMasuk = NOW() WHERE id = ?',
+      'UPDATE employees SET waktuMasuk = NOW(), status = CASE WHEN TIME(NOW()) > "07:00:00" THEN "Terlambat" ELSE "Tepat Waktu" END WHERE id = ?',
       [req.params.id]
     );
 
@@ -84,8 +84,8 @@ router.put('/:id', auth, async (req, res) => {
 
   try {
     await db.query(
-      'UPDATE employees SET name=?, department=? WHERE id=?',
-      [name, department, id]
+      'UPDATE employees SET name=?, department=?, status=? WHERE id=?',
+      [name, department, 'Tepat Waktu', id]
     );
 
     res.json({ message: 'Data berhasil diupdate' });
